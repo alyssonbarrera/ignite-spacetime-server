@@ -12,7 +12,7 @@ export class GetMemoryByIdController {
 
     const useCase = makeGetMemoryByIdUseCase()
 
-    const { memory } = await useCase.execute({ id })
+    const { memory } = await useCase.execute({ id, userId: request.user.sub })
 
     return reply.status(200).send({
       memory,

@@ -20,6 +20,7 @@ export class CreateMemoryController {
       content,
       isPublic,
       coverUrl,
+      userId: request.user.sub,
     })
 
     return reply.status(201).send()

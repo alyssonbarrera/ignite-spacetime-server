@@ -1,10 +1,16 @@
 import { Memory } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 
-export async function makeMemory(id?: string, override?: Partial<Memory>) {
+type makeMemoryProps = {
+  id?: string
+  userId?: string
+  override?: Partial<Memory>
+}
+
+export function makeMemory({ id, userId, override }: makeMemoryProps = {}) {
   const memory = {
     id: id || randomUUID(),
-    userId: 'c50e69c2-f45d-11ed-a05b-0242ac120003',
+    userId: userId || randomUUID(),
     content: 'Memory Content',
     coverUrl: 'www.coverurl.com',
     isPublic: false,

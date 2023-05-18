@@ -1,8 +1,8 @@
 import { AppError } from '@/shared/errors/AppError'
-import { makeMemory } from '@/test/factories/make-memory'
+import { makeMemory } from '../factories/make-memory'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { UpdateMemoryUseCase } from '@/modules/memories/use-cases/update-memory'
-import { InMemoryMemoriesRepository } from '@/test/repositories/in-memory/in-memory-memories-repository'
+import { InMemoryMemoriesRepository } from '../repositories/in-memory/in-memory-memories-repository'
 
 let inMemoryMemoriesRepository: InMemoryMemoriesRepository
 let sut: UpdateMemoryUseCase
@@ -13,8 +13,10 @@ describe('Update Memory Use Case', () => {
     sut = new UpdateMemoryUseCase(inMemoryMemoriesRepository)
   })
 
-  it('should be able to get a memory', async () => {
-    const memoryData = await makeMemory()
+  it('should be able to update a memory', async () => {
+    const memoryData = makeMemory({
+      userId: '401e119d-405c-4972-b75d-f8fcc6c93732',
+    })
     await inMemoryMemoriesRepository.create(memoryData)
 
     const updatedMemoryData = {
@@ -26,6 +28,7 @@ describe('Update Memory Use Case', () => {
     const { memory } = await sut.execute({
       id: memoryData.id,
       ...updatedMemoryData,
+      userId: memoryData.userId,
     })
 
     expect(memory.id).toBe(memoryData.id)
@@ -38,13 +41,14 @@ describe('Update Memory Use Case', () => {
     expect(memory.isPublic).not.toBe(memoryData.isPublic)
   })
 
-  it('should not be able to get a memory if it does not exist', async () => {
+  it('should not be able to update a memory if it does not exist', async () => {
     expect(async () => {
       return await sut.execute({
         id: 'invalid-id',
         content: 'Updated Memory Content',
         coverUrl: 'www.updatedcoverurl.com',
         isPublic: true,
+        userId: '401e119d-405c-4972-b75d-f8fcc6c93732',
       })
     }).rejects.toBeInstanceOf(AppError)
   })

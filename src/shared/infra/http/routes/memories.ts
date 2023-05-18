@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { verifyJWT } from '../middlewares/verify-jwt'
 
 import { FetchMemoriesController } from '@/modules/memories/controllers/fetch-memories'
 import { GetMemoryByIdController } from '@/modules/memories/controllers/get-memory-by-id'
@@ -13,6 +14,8 @@ const deleteMemoryController = new DeleteMemoryController()
 const updateMemoryController = new UpdateMemoryController()
 
 export async function memoriesRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', verifyJWT)
+
   app.get('/memories', fetchMemoriesController.handle)
   app.get('/memories/:id', getMemoryByIdController.handle)
   app.post('/memories', createMemoryController.handle)

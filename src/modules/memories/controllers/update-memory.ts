@@ -26,6 +26,7 @@ export class UpdateMemoryController {
       content,
       coverUrl,
       isPublic,
+      userId: request.user.sub,
     })
 
     return reply.status(200).send({

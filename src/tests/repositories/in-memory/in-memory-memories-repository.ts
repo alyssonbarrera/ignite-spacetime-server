@@ -30,6 +30,12 @@ export class InMemoryMemoriesRepository implements MemoriesRepository {
     return memory || null
   }
 
+  async findByUserId(id: string): Promise<Memory[]> {
+    const memories = this.items.filter((item) => item.userId === id)
+
+    return memories
+  }
+
   async update(id: string, data: Prisma.MemoryUpdateInput): Promise<Memory> {
     const memory = this.items.find((item) => item.id === id)
 

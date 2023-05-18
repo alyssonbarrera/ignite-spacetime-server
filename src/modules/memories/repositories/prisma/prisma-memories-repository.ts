@@ -35,6 +35,16 @@ export class PrismaMemoriesRepository implements MemoriesRepository {
     return memory
   }
 
+  async findByUserId(id: string): Promise<Memory[]> {
+    const memory = await prisma.memory.findMany({
+      where: {
+        userId: id,
+      },
+    })
+
+    return memory
+  }
+
   async update(id: string, data: Prisma.MemoryUpdateInput): Promise<Memory> {
     const memory = await prisma.memory.update({
       where: {

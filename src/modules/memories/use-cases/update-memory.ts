@@ -7,6 +7,7 @@ type UpdateMemoryUseCaseRequest = {
   content?: string
   coverUrl?: string
   isPublic?: boolean
+  userId: string
 }
 
 type UpdateMemoryUseCaseResponse = {
@@ -21,11 +22,16 @@ export class UpdateMemoryUseCase {
     content,
     coverUrl,
     isPublic,
+    userId,
   }: UpdateMemoryUseCaseRequest): Promise<UpdateMemoryUseCaseResponse> {
     const memory = await this.memoriesRepository.findById(id)
 
     if (!memory) {
       throw new AppError('Memory not found', 404)
+    }
+
+    if (memory.userId !== userId) {
+      throw new AppError('You are not allowed to update this memory', 403)
     }
 
     const updatedMemory = await this.memoriesRepository.update(id, {

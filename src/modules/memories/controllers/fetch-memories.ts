@@ -12,7 +12,10 @@ export class FetchMemoriesController {
 
     const useCase = makeFetchMemoriesUseCase()
 
-    const { memories } = await useCase.execute({ page })
+    const { memories } = await useCase.execute({
+      userId: request.user.sub,
+      page,
+    })
 
     return reply.status(200).send({
       memories,

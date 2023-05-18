@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db_nlw_spacetime:
+    image: bitnami/postgresql
+    container_name: db_nlw_spacetime
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=nlwspacetime

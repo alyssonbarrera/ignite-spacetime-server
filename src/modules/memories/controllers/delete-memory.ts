@@ -12,7 +12,7 @@ export class DeleteMemoryController {
 
     const useCase = makeDeleteMemoryUseCase()
 
-    await useCase.execute({ id })
+    await useCase.execute({ id, userId: request.user.sub })
 
     return reply.status(204).send()
   }

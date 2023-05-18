@@ -1,31 +1,28 @@
 import { Memory } from '@prisma/client'
+import { MemoryMinDTO } from '../dtos/memory-min-dto'
 import { MemoriesRepository } from '../repositories/memories-repository'
 
 type FetchMemoriesUseCaseRequest = {
+  userId: string
   page: number
 }
 
 type FetchMemoriesUseCaseResponse = {
-  memories: {
-    id: string
-    coverUrl: string
-    excerpt: string
-  }[]
+  memories: MemoryMinDTO[]
 }
 
 export class FetchMemoriesUseCase {
   constructor(private memoriesRepository: MemoriesRepository) {}
 
   async execute({
+    userId,
     page,
   }: FetchMemoriesUseCaseRequest): Promise<FetchMemoriesUseCaseResponse> {
     const memories = await this.memoriesRepository.findAll(page)
 
-    const response = memories.map((memory: Memory) => ({
-      id: memory.id,
-      coverUrl: memory.coverUrl,
-      excerpt: memory.content.substring(0, 150),
-    }))
+    const response = memories.map((memory: Memory) => {
+      return new MemoryMinDTO(memory)
+    })
 
     return {
       memories: response,

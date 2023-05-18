@@ -7,6 +7,7 @@ const PORT = env.PORT
 app
   .listen({
     port: PORT,
+    host: '::',
   })
   .then(() => {
     console.log(`🚀 HTTP server running on http://localhost:${PORT}`)
