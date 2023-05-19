@@ -27,7 +27,7 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
   mock
     .onGet('https://api.github.com/user', {
       headers: {
-        Authorization: 'Bearer mocked_access_token',
+        Authorization: `Bearer ${mockGithubResponse.access_token}`,
       },
     })
     .reply(200, {

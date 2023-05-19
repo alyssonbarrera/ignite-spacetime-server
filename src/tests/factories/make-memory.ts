@@ -1,5 +1,13 @@
-import { Memory } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
+
+type Memory = {
+  id: string
+  userId: string
+  coverUrl: string
+  content: string
+  isPublic: boolean
+  createdAt: Date
+}
 
 type makeMemoryProps = {
   id?: string

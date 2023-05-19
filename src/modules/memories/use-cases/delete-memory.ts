@@ -15,9 +15,7 @@ export class DeleteMemoryUseCase {
     id,
     userId,
   }: DeleteMemoryUseCaseRequest): Promise<DeleteMemoryUseCaseResponse> {
-    console.log('id', userId)
     const memory = await this.memoriesRepository.findById(id)
-    console.log('memory', memory)
 
     if (!memory) {
       throw new AppError('Memory not found', 404)

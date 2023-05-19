@@ -20,9 +20,6 @@ describe('Delete Memory Controller', () => {
       userId: user.sub,
     })
 
-    console.log('createdMemory', createdMemory)
-    console.log('user', user.sub)
-
     const response = await request(app.server)
       .delete(`/memories/${createdMemory.id}`)
       .set({

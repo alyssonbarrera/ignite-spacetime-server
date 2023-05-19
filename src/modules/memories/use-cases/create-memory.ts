@@ -1,7 +1,7 @@
 import { Memory } from '@prisma/client'
+import { AppError } from '@/shared/errors/AppError'
 import { MemoriesRepository } from '../repositories/memories-repository'
 import { UsersRepository } from '@/modules/users/repositories/users-repository'
-import { AppError } from '@/shared/errors/AppError'
 
 type CreateMemoryUseCaseRequest = {
   content: string

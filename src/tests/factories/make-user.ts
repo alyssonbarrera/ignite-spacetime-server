@@ -1,5 +1,12 @@
-import { User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
+
+type User = {
+  id: string
+  githubId: number
+  name: string
+  login: string
+  avatarUrl: string
+}
 
 type makeUserProps = {
   id?: string
