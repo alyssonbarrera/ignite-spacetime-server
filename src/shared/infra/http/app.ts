@@ -2,23 +2,22 @@ import fastify from 'fastify'
 import jwt from '@fastify/jwt'
 import { ZodError } from 'zod'
 import cors from '@fastify/cors'
+import { resolve } from 'node:path'
 import multipart from '@fastify/multipart'
 
 import { env } from '@/shared/env'
+import { AppError } from '@/shared/errors/AppError'
 
 import { usersRoutes } from './routes/users'
 import { uploadRoutes } from './routes/upload'
 import { memoriesRoutes } from './routes/memories'
-
-import { AppError } from '@/shared/errors/AppError'
-import { resolve } from 'node:path'
 
 export const app = fastify()
 
 app.register(multipart)
 
 app.register(require('@fastify/static'), {
-  root: resolve(__dirname, '..', '..', '..', '..', 'tmp'),
+  root: resolve(__dirname, '../../../', 'tmp'),
   prefix: '/uploads',
 })
 
@@ -31,8 +30,10 @@ app.register(jwt, {
 })
 
 app.addHook('preHandler', async (request, reply) => {
-  env.REQUEST_HOSTNAME = request.hostname
-  env.REQUEST_PROTOCOL = request.protocol
+  if (env.NODE_ENV === 'test' || env.NODE_ENV === 'dev') {
+    env.REQUEST_HOSTNAME = '10.0.0.78:3333'
+    env.REQUEST_PROTOCOL = request.protocol
+  }
 })
 
 app.register(uploadRoutes)

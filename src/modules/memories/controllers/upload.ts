@@ -8,8 +8,10 @@ export class UploadController {
 
     const useCase = makeUploadUseCase()
 
-    await useCase.execute({ upload })
+    const { fileUrl } = await useCase.execute({ upload })
 
-    return reply.status(204).send()
+    return reply.status(200).send({
+      fileUrl,
+    })
   }
 }

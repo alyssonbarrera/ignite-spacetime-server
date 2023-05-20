@@ -4,7 +4,7 @@ import { FastifyRequest } from 'fastify'
 export async function validateRequestFile(request: FastifyRequest) {
   const upload = await request.file({
     limits: {
-      fileSize: 1024 * 1024 * 5, // 5mb
+      fileSize: 1024 * 1024 * 50, // 50mb
     },
   })
 

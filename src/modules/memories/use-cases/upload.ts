@@ -1,5 +1,4 @@
-import { MemoriesRepository } from '../repositories/memories-repository'
-import { makeLocalStorageProvider } from '@/shared/containers/providers/storage-provider'
+import { makeStorageProvider } from '@/shared/containers/providers/storage-provider'
 
 type UploadUseCaseRequest = {
   upload: any
@@ -10,12 +9,12 @@ type UploadUseCaseResponse = {
 }
 
 export class UploadUseCase {
-  constructor(private memoriesRepository: MemoriesRepository) {}
+  constructor() {}
 
   async execute({
     upload,
   }: UploadUseCaseRequest): Promise<UploadUseCaseResponse> {
-    const storageProvider = makeLocalStorageProvider()
+    const storageProvider = makeStorageProvider()
 
     const { fileUrl } = await storageProvider.saveFile({ upload })
 

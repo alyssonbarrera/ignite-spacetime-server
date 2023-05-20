@@ -15,7 +15,10 @@ import {
 
 const pump = promisify(pipeline)
 
-const tmpFolder = resolve(__dirname, '..', '..', '..', '..', '..', '..', 'tmp')
+const tmpFolder =
+  env.NODE_ENV === 'prod'
+    ? resolve(__dirname, '../../../', 'tmp')
+    : resolve(__dirname, '../../../../../', 'tmp')
 
 export class LocalStorageProvider implements IStorageProvider {
   async saveFile({ upload }: UploadProps): Promise<SaveFileResponse> {

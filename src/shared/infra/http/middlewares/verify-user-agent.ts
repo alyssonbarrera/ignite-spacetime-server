@@ -5,12 +5,12 @@ export async function verifyUserAgent(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const userAgent = request.headers['user-agent']
+  const requestOrigin = request.headers['x-request-origin']
 
-  if (userAgent && userAgent.includes('web')) {
+  if (requestOrigin && requestOrigin.includes('web')) {
     env.GITHUB_CLIENT_ID = env.GITHUB_WEB_CLIENT_ID
     env.GITHUB_CLIENT_SECRET = env.GITHUB_WEB_CLIENT_SECRET
-  } else if (userAgent && userAgent.includes('mobile')) {
+  } else if (requestOrigin && requestOrigin.includes('mobile')) {
     env.GITHUB_CLIENT_ID = env.GITHUB_MOBILE_CLIENT_ID
     env.GITHUB_CLIENT_SECRET = env.GITHUB_MOBILE_CLIENT_SECRET
   } else {
