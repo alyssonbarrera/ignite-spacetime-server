@@ -10,7 +10,7 @@ export class UpdateMemoryController {
 
     const updateMemoryBodySchema = z.object({
       content: z.string().optional(),
-      coverUrl: z.string().optional(),
+      coverUrl: z.string().url().optional(),
       isPublic: z.coerce.boolean().default(false),
     })
 

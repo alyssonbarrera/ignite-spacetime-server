@@ -1,6 +1,7 @@
 import { Memory } from '@prisma/client'
 import { AppError } from '@/shared/errors/AppError'
 import { MemoriesRepository } from '../repositories/memories-repository'
+import { makeStorageProvider } from '@/shared/containers/providers/storage-provider'
 
 type UpdateMemoryUseCaseRequest = {
   id: string
@@ -32,6 +33,12 @@ export class UpdateMemoryUseCase {
 
     if (memory.userId !== userId) {
       throw new AppError('You are not allowed to update this memory', 403)
+    }
+
+    const storageProvider = makeStorageProvider()
+
+    if (coverUrl && memory.coverUrl) {
+      await storageProvider.deleteFile(memory.coverUrl)
     }
 
     const updatedMemory = await this.memoriesRepository.update(id, {

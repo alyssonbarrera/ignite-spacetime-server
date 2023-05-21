@@ -5,9 +5,10 @@ export type SaveFileResponse = {
 }
 
 export type UploadProps = {
-  upload: MultipartFile
+  media: MultipartFile
 }
 
 export interface IStorageProvider {
-  saveFile({ upload }: UploadProps): Promise<SaveFileResponse>
+  saveFile({ media }: UploadProps): Promise<SaveFileResponse>
+  deleteFile(fileUrl: string): Promise<void>
 }

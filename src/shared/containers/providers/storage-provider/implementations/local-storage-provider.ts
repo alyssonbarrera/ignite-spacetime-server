@@ -1,34 +1,17 @@
 import { resolve } from 'path'
-import { randomUUID } from 'node:crypto'
-
-import { env } from '@/shared/env'
-import { extname } from 'node:path'
-import { promisify } from 'node:util'
-import { pipeline } from 'node:stream'
-import { createWriteStream } from 'node:fs'
-
+import { promises } from 'fs'
 import {
   IStorageProvider,
   SaveFileResponse,
   UploadProps,
 } from '../interface-storage-provider'
 
-const pump = promisify(pipeline)
-
-const tmpFolder =
-  env.NODE_ENV === 'prod'
-    ? resolve(__dirname, '../../../', 'tmp')
-    : resolve(__dirname, '../../../../../', 'tmp')
+import { env } from '@/shared/env'
+import upload from '@/config/upload'
 
 export class LocalStorageProvider implements IStorageProvider {
-  async saveFile({ upload }: UploadProps): Promise<SaveFileResponse> {
-    const fileId = randomUUID()
-    const extension = extname(upload.filename)
-    const fileName = fileId.concat(extension)
-
-    const writeStream = createWriteStream(resolve(tmpFolder, fileName))
-
-    await pump(upload.file, writeStream)
+  async saveFile({ media }: UploadProps): Promise<SaveFileResponse> {
+    const { fileName } = await upload.data(media)
 
     const fullUrl = env.REQUEST_PROTOCOL.concat('://').concat(
       env.REQUEST_HOSTNAME,
@@ -39,5 +22,11 @@ export class LocalStorageProvider implements IStorageProvider {
     return {
       fileUrl,
     }
+  }
+
+  async deleteFile(fileUrl: string): Promise<void> {
+    const tmpFolder = upload.tmpFolder
+    const fileName = fileUrl.split('/uploads/')[1]
+    await promises.unlink(resolve(tmpFolder, fileName))
   }
 }

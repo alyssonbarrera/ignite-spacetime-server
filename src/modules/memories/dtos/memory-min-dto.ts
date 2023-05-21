@@ -9,7 +9,10 @@ export class MemoryMinDTO {
   constructor(props: Memory) {
     this.id = props.id
     this.coverUrl = props.coverUrl
-    this.excerpt = props.content.substring(0, 150) + '...'
+    this.excerpt =
+      props.content.length >= 150
+        ? props.content.substring(0, 150).trimEnd().concat('...')
+        : props.content.trimEnd()
     this.createdAt = props.createdAt
   }
 

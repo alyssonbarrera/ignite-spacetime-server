@@ -51,7 +51,7 @@ app.setErrorHandler((error, _, reply) => {
     return reply.status(error.statusCode).send({ message: error.message })
   }
 
-  if (env.NODE_ENV !== 'prod') {
+  if (env.NODE_ENV === 'prod') {
     console.error(error)
   } else {
     // TODO: Here we should log to on external tool like DataDog/NewRelic/Sentry

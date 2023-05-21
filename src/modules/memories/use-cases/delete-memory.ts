@@ -1,5 +1,6 @@
 import { AppError } from '@/shared/errors/AppError'
 import { MemoriesRepository } from '../repositories/memories-repository'
+import { makeStorageProvider } from '@/shared/containers/providers/storage-provider'
 
 type DeleteMemoryUseCaseRequest = {
   id: string
@@ -25,7 +26,10 @@ export class DeleteMemoryUseCase {
       throw new AppError('You are not allowed to delete this memory', 403)
     }
 
+    const storageProvider = makeStorageProvider()
+
     await this.memoriesRepository.delete(id)
+    await storageProvider.deleteFile(memory.coverUrl)
 
     return {}
   }

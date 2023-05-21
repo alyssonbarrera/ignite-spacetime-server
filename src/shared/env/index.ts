@@ -20,6 +20,11 @@ const envSchema = z.object({
   JWT_SECRET: z.string().default('secret'),
   REQUEST_PROTOCOL: z.string().default('http'),
   REQUEST_HOSTNAME: z.string().default('localhost'),
+  AWS_BUCKET: z.string(),
+  AWS_REGION: z.string(),
+  AWS_ACCESS_KEY_ID: z.string(),
+  AWS_SECRET_ACCESS_KEY: z.string(),
+  STORAGE_PROVIDER: z.enum(['local', 's3']).default('local'),
 })
 
 const _env = envSchema.safeParse(process.env)
