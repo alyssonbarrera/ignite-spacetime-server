@@ -1,0 +1,49 @@
+name: Run Tests and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tests-and-deploy:
+    name: Run Tests and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }} 
+          source: "., !node_modules"
+          target: "~/app/ignite-spacetime-server"
+
+      - name: Update API
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }} 
+          script: |
+            cd ~/app/ignite-spacetime-server
+            npm install
+            npx prisma migrate deploy
+            pm2 restart nlw-spacetime
