@@ -14,8 +14,6 @@ const deleteMemoryController = new DeleteMemoryController()
 const updateMemoryController = new UpdateMemoryController()
 
 export async function memoriesRoutes(app: FastifyInstance) {
-  app.addHook('preHandler', verifyJWT)
-
   app.get(
     '/memories/:id',
     { preHandler: optionalVerifyJWT },
