@@ -24,7 +24,7 @@ describe('Delete Memory Controller', () => {
       .delete(`/memories/${createdMemory.id}`)
       .set({
         Authorization: `Bearer ${token}`,
-        'User-Agent': 'web',
+        'X-Request-Origin': 'web',
       })
 
     expect(response.status).toBe(204)

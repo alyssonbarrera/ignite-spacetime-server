@@ -41,7 +41,7 @@ describe('Authenticate Controller', () => {
         code: '1234567890',
       })
       .set({
-        'User-Agent': 'web',
+        'X-Request-Origin': 'web',
       })
 
     expect(response.status).toBe(200)

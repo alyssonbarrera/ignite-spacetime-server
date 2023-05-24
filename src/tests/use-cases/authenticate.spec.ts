@@ -5,16 +5,22 @@ import { makeUser } from '../factories/make-user'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { AuthenticateUseCase } from '@/modules/users/use-cases/authenticate'
 import { InMemoryUsersRepository } from '../repositories/in-memory/in-memory-users-repository'
+import { InMemoryUsersTokenRepository } from '../repositories/in-memory/in-memory-users-token-repository'
 
 const mock = new MockAdapter(axios)
 
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryUsersTokenRepository: InMemoryUsersTokenRepository
 let sut: AuthenticateUseCase
 
 describe('Authenticate Use Case', () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
-    sut = new AuthenticateUseCase(inMemoryUsersRepository)
+    inMemoryUsersTokenRepository = new InMemoryUsersTokenRepository()
+    sut = new AuthenticateUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokenRepository,
+    )
   })
 
   it('should be able to authenticate a user', async () => {

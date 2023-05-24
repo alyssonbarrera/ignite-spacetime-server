@@ -1,7 +1,7 @@
 import { env } from '@/shared/env'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function verifyUserAgent(
+export async function verifyRequest(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {

@@ -1,10 +1,11 @@
-import { S3StorageProvider } from './implementations/s3-storage-provider'
-import { LocalStorageProvider } from './implementations/local-storage-provider'
 import { env } from '@/shared/env'
+import { S3StorageProvider } from './implementations/s3-storage-provider'
+import { MockStorageProvider } from '@/tests/mocks/mock-storage-provider'
+import { LocalStorageProvider } from './implementations/local-storage-provider'
 
 export function makeStorageProvider() {
   if (env.NODE_ENV === 'test') {
-    return new LocalStorageProvider()
+    return new MockStorageProvider()
   }
 
   const storage = env.STORAGE_PROVIDER

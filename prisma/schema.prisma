@@ -14,7 +14,8 @@ model User {
   login     String
   avatarUrl String @map("avatar_url")
 
-  memories Memory[]
+  memories  Memory[]
+  UserToken UserToken[]
 }
 
 model Memory {
@@ -25,6 +26,15 @@ model Memory {
   content   String
   isPublic  Boolean  @default(false) @map("is_public")
   createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model UserToken {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  refreshToken String   @unique @map("refresh_token")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   user User @relation(fields: [userId], references: [id])
 }

@@ -36,4 +36,21 @@ describe('Get Memory Use Case', () => {
       })
     }).rejects.toBeInstanceOf(AppError)
   })
+
+  it('should not be able to get a memory if it is not public and the user is not the owner', async () => {
+    expect(async () => {
+      const memoryData = makeMemory({
+        override: {
+          isPublic: false,
+        },
+        userId: '401e119d-405c-4972-b75d-f8fcc6c93732',
+      })
+      await inMemoryMemoriesRepository.create(memoryData)
+
+      return await sut.execute({
+        id: memoryData.id,
+        userId: 'invalid-user-id',
+      })
+    }).rejects.toBeInstanceOf(AppError)
+  })
 })

@@ -31,7 +31,7 @@ describe('Fetch Memories Controller', () => {
       })
       .set({
         Authorization: `Bearer ${token}`,
-        'User-Agent': 'web',
+        'X-Request-Origin': 'web',
       })
 
     expect(response.status).toBe(200)

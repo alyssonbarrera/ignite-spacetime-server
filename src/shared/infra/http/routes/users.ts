@@ -1,12 +1,11 @@
 import { FastifyInstance } from 'fastify'
-
-import { verifyUserAgent } from '../middlewares/verify-user-agent'
 import { AuthenticateController } from '@/modules/users/controllers/authenticate'
+import { RefreshController } from '@/modules/users/controllers/refresh'
 
 const authenticateController = new AuthenticateController()
+const refreshController = new RefreshController()
 
 export async function usersRoutes(app: FastifyInstance) {
-  app.addHook('preHandler', verifyUserAgent)
-
   app.post('/register', authenticateController.handle)
+  app.patch('/token/refresh', refreshController.handle)
 }

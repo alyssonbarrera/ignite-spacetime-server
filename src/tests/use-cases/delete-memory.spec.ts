@@ -7,7 +7,7 @@ import { InMemoryMemoriesRepository } from '../repositories/in-memory/in-memory-
 let inMemoryMemoriesRepository: InMemoryMemoriesRepository
 let sut: DeleteMemoryUseCase
 
-describe.skip('Delete Memory Use Case', () => {
+describe('Delete Memory Use Case', () => {
   beforeEach(() => {
     inMemoryMemoriesRepository = new InMemoryMemoriesRepository()
     sut = new DeleteMemoryUseCase(inMemoryMemoriesRepository)

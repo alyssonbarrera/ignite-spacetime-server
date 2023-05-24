@@ -11,6 +11,14 @@ import { AppError } from '@/shared/errors/AppError'
 import { usersRoutes } from './routes/users'
 import { uploadRoutes } from './routes/upload'
 import { memoriesRoutes } from './routes/memories'
+import { verifyRequest } from './middlewares/verify-request'
+
+const jwtMessage = {
+  authorizationTokenExpiredMessage: 'Authorization token expired',
+  authorizationTokenInvalid: (error: { message: string }) => {
+    return `Authorization token is invalid: ${error.message}`
+  },
+}
 
 export const app = fastify()
 
@@ -27,6 +35,9 @@ app.register(cors, {
 
 app.register(jwt, {
   secret: env.JWT_SECRET,
+  messages: {
+    ...jwtMessage,
+  },
 })
 
 app.addHook('preHandler', async (request, reply) => {
@@ -36,6 +47,7 @@ app.addHook('preHandler', async (request, reply) => {
   }
 })
 
+app.addHook('onRequest', verifyRequest)
 app.register(uploadRoutes)
 app.register(usersRoutes)
 app.register(memoriesRoutes)
@@ -57,5 +69,7 @@ app.setErrorHandler((error, _, reply) => {
     // TODO: Here we should log to on external tool like DataDog/NewRelic/Sentry
   }
 
-  return reply.status(500).send({ message: 'Internal server error' })
+  return reply
+    .status(500)
+    .send({ message: `Internal server error - ${error.message}` })
 })

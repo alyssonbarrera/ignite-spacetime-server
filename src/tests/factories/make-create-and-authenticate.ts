@@ -43,7 +43,7 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
       code: '1234567890',
     })
     .set({
-      'User-Agent': 'web',
+      'X-Request-Origin': 'web',
     })
 
   const { token } = authResponse.body
