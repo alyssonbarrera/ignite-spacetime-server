@@ -8,33 +8,30 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  githubId  Int    @unique @map("github_id")
+  id        String      @id @default(uuid())
+  githubId  Int         @unique @map("github_id")
   name      String
   login     String
-  avatarUrl String @map("avatar_url")
-
+  avatarUrl String      @map("avatar_url")
   memories  Memory[]
   UserToken UserToken[]
 }
 
 model Memory {
-  id     String @id @default(uuid())
-  userId String @map("user_id")
-
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
   coverUrl  String   @map("cover_url")
   content   String
   isPublic  Boolean  @default(false) @map("is_public")
   createdAt DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model UserToken {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
   refreshToken String   @unique @map("refresh_token")
+  platform     String
   createdAt    DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 }

@@ -6,11 +6,13 @@ export class PrismaUsersTokenRepository implements UsersTokenRepository {
   async create({
     refreshToken,
     userId,
+    platform,
   }: Prisma.UserTokenUncheckedCreateInput): Promise<UserToken> {
     const userToken = await prisma.userToken.create({
       data: {
         refreshToken,
         userId,
+        platform,
       },
     })
 
@@ -35,6 +37,18 @@ export class PrismaUsersTokenRepository implements UsersTokenRepository {
     await prisma.userToken.delete({
       where: {
         id,
+      },
+    })
+  }
+
+  async deleteByUserIdAndPlatform(
+    userId: string,
+    platform: string,
+  ): Promise<void> {
+    await prisma.userToken.deleteMany({
+      where: {
+        userId,
+        platform,
       },
     })
   }

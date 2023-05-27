@@ -13,6 +13,7 @@ export class InMemoryUsersTokenRepository implements UsersTokenRepository {
       id: randomUUID(),
       userId,
       refreshToken,
+      platform: 'web',
       createdAt: new Date(),
     }
 
@@ -34,6 +35,15 @@ export class InMemoryUsersTokenRepository implements UsersTokenRepository {
 
   async delete(id: string): Promise<void> {
     this.items = this.items.filter((item) => item.id !== id)
+  }
+
+  async deleteByUserIdAndPlatform(
+    userId: string,
+    platform: string,
+  ): Promise<void> {
+    this.items = this.items.filter(
+      (item) => item.userId !== userId && item.platform !== platform,
+    )
   }
 
   async deleteAllByUserId(userId: string): Promise<void> {

@@ -7,6 +7,7 @@ import { makeGitHubOAuthClientProvider } from '@/shared/containers/providers/aut
 
 type AuthenticateUseCaseRequest = {
   code: string
+  platform: string
 }
 
 type AuthenticateUseCaseResponse = {
@@ -23,6 +24,7 @@ export class AuthenticateUseCase {
 
   async execute({
     code,
+    platform,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     const { jwt_secret, expires_in_token, expires_in_refresh_token } = auth
 
@@ -67,11 +69,12 @@ export class AuthenticateUseCase {
       },
     )
 
-    await this.usersTokenRepository.deleteAllByUserId(user.id)
+    await this.usersTokenRepository.deleteByUserIdAndPlatform(user.id, platform)
 
     await this.usersTokenRepository.create({
       refreshToken,
       userId: user.id,
+      platform,
     })
 
     return {

@@ -6,6 +6,7 @@ import { UsersTokenRepository } from '../repositories/users-token-repository'
 
 type RefreshUseCaseRequest = {
   refreshToken: string
+  platform: string
 }
 
 type RefreshUseCaseResponse = {
@@ -26,6 +27,7 @@ export class RefreshUseCase {
 
   async execute({
     refreshToken,
+    platform,
   }: RefreshUseCaseRequest): Promise<RefreshUseCaseResponse> {
     const { jwt_secret, expires_in_token, expires_in_refresh_token } = auth
 
@@ -50,7 +52,7 @@ export class RefreshUseCase {
       throw new AppError('Refresh token does not exists', 401)
     }
 
-    await this.usersTokenRepository.delete(userToken.id)
+    await this.usersTokenRepository.deleteByUserIdAndPlatform(userId, platform)
 
     const newToken = jwt.sign(
       {
@@ -79,6 +81,7 @@ export class RefreshUseCase {
     await this.usersTokenRepository.create({
       refreshToken: newRefreshToken,
       userId,
+      platform,
     })
 
     return {

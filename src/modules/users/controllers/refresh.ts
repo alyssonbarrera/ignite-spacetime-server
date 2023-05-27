@@ -8,6 +8,8 @@ export class RefreshController {
       refreshToken: z.string(),
     })
 
+    const platform = request.headers['x-request-origin'] as string
+
     const { refreshToken: bodyRefreshToken } = refreshBodySchema.parse(
       request.body,
     )
@@ -16,6 +18,7 @@ export class RefreshController {
 
     const { token, refreshToken } = await useCase.execute({
       refreshToken: bodyRefreshToken,
+      platform,
     })
 
     return reply.status(200).send({ token, refreshToken })
