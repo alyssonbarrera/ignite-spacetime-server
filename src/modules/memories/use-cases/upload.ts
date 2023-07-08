@@ -16,10 +16,7 @@ export class UploadUseCase {
   }: UploadUseCaseRequest): Promise<UploadUseCaseResponse> {
     const storageProvider = makeStorageProvider()
 
-    const { fileUrl } = await storageProvider.saveFile({ media })
-
-    console.log('fileUrl', fileUrl)
-    console.log('media', media)
+    const { fileUrl } = await storageProvider.saveFile({ media }).then()
 
     return {
       fileUrl,

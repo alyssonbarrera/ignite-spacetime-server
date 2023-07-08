@@ -18,7 +18,7 @@ export class FetchMemoriesUseCase {
     userId,
     page,
   }: FetchMemoriesUseCaseRequest): Promise<FetchMemoriesUseCaseResponse> {
-    const memories = await this.memoriesRepository.findAll(page)
+    const memories = await this.memoriesRepository.findByUserId(userId, page)
 
     const response = memories.map((memory: Memory) => {
       return new MemoryMinDTO(memory)

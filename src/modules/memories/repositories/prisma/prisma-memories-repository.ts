@@ -35,11 +35,16 @@ export class PrismaMemoriesRepository implements MemoriesRepository {
     return memory
   }
 
-  async findByUserId(id: string): Promise<Memory[]> {
+  async findByUserId(id: string, page: number): Promise<Memory[]> {
     const memory = await prisma.memory.findMany({
       where: {
         userId: id,
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      skip: (page - 1) * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
     })
 
     return memory

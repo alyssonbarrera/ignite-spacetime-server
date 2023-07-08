@@ -30,8 +30,10 @@ export class InMemoryMemoriesRepository implements MemoriesRepository {
     return memory || null
   }
 
-  async findByUserId(id: string): Promise<Memory[]> {
-    const memories = this.items.filter((item) => item.userId === id)
+  async findByUserId(id: string, page: number): Promise<Memory[]> {
+    const memories = this.items
+      .filter((item) => item.userId === id)
+      .slice((page - 1) * 20, page * 20)
 
     return memories
   }
